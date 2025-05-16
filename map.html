@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lesotho Interactive Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; width: 100%; }
+
+        .custom-popup .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            padding: 10px;
+            background: #f8f9fa;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .custom-popup .leaflet-popup-content {
+            margin: 8px 12px;
+            font-family: Arial, sans-serif;
+        }
+
+        .landmark-popup h3 {
+            margin: 0 0 8px 0;
+            color: #2a4a7a;
+            font-size: 16px;
+        }
+
+        .landmark-popup p {
+            margin: 0 0 12px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .landmark-popup button {
+            background: #4a6da7;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .landmark-popup button:hover {
+            background: #3a5a8b;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+
+    const map = L.map('map').setView([-29.61, 28.23], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+
+    const landmarkIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/2776/2776067.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    });
+
+    // Landmarks data
+    const landmarks = [
+    {
+        name: "Maletsunyane Falls",
+        coords: [-29.9039, 27.9256],
+        description: "One of Africa's highest single-drop waterfalls (192m)",
+        media: "maletsunyane",
+        images: ["maletsunyane.jpg", "maletsunyane_falls.ppg"],
+        video: "maletsunyane-falls.mp4",
+        audio: "koriana.mp3"
+    },
+    {
+        name: "Katse Dam",
+        coords: [-29.3333, 28.5],
+        description: "Africa's second largest double-curvature arch dam",
+        media: "katse",
+        images: ["Katse-Dam-Lesotho.jpg", "katse-activity.jpg"],
+        video: "katse-dam.mp4",
+        audio: "koriana.mp3"
+    },
+    {
+        name: "Liphofung Cave",
+        coords: [-28.9833, 28.8833],
+        description: "Historical site with San rock art",
+        media: "liphofung",
+        images: ["liphofung.jpg", "kome2.jpg"],
+        video: "liphofung-cave.mp4",
+        audio: "liphofung sound.mp3"
+    },
+    {
+        name: "Malealea Lodge",
+        coords: [-29.8333, 27.7167],
+        description: "Tourist lodge offering pony trekking",
+        media: "malealea",
+        images: ["malealea-lodge.jpg", "malealea-lodge2.jpg"],
+        video: "malealea.mp4",
+        audio: "koriana.mp3"
+    },
+    {
+        name: "Sani Pass",
+        coords: [-29.5869, 29.2864],
+        description: "Mountain pass connecting Lesotho to South Africa",
+        media: "sani_pass",
+        images: ["sani pass.jpg"],
+        video: "sani-pass.mp4",
+        audio: "koriana.mp3"
+    },
+    {
+        name: "Sehlabathebe National Park",
+        coords: [-30.0333, 28.7167],
+        description: "UNESCO World Heritage Site with rich biodiversity",
+        media: "sehlabathebe",
+        images: ["sehlabathebe1.jpg", "sehlabathebe2.jpg"],
+        video: "sehlabathebe.mp4",
+        audio: "koriana.mp3"
+    },
+    {
+        name: "Afriski",
+        coords: [-28.8203, 28.7235],
+        description: "Afriski is a year-round destination for skiing, snowboarding, mountain biking, hiking, and more.",
+        media: "afriski",
+        images: ["afriski-ski-mountain.jpg", "afrisky.jpg"],
+        video: "Afriski Mountain Resort.mp4",
+        audio: "koriana.mp3"
+    },
+    {
+        name: "ThabaBosiu",
+        coords: [-29.3667, 27.7167],
+        description: "Historic mountain fortress of King Moshoeshoe I",
+        media: "thababosiu",
+        images: ["thababosiu.jpg", "thaba-bosiu-cultural.jpg"],
+        video: "top10.mp4",
+        audio: "koriana.mp3"
+    }
+];
+
+    // Process each landmark and add to map
+    landmarks.forEach(landmark => {
+        const marker = L.marker(landmark.coords, { icon: landmarkIcon }).addTo(map);
+
+        // Create popup content with View Details button
+        const popupContent = `
+            <div class="landmark-popup">
+                <h3>${landmark.name}</h3>
+                <p>${landmark.description}</p>
+                <button onclick="showLandmarkDetails('${landmark.media}')">
+                    View Details
+                </button>
+            </div>
+        `;
+
+
+        marker.bindPopup(popupContent, {
+            className: 'custom-popup',
+            maxWidth: 250
+        });
+    });
+
+    // Handle View Details button clicks
+    function showLandmarkDetails(landmarkId) {
+        // Find the landmark data
+        const landmark = landmarks.find(l => l.media === landmarkId);
+        if (!landmark) return;
+
+        // Send data to JavaFX
+        const landmarkData = {
+            id: landmark.media,
+            name: landmark.name,
+            description: landmark.description,
+            images: landmark.images,
+            video: landmark.video,
+            audio: landmark.audio
+        };
+
+        // Use prompt to communicate with JavaFX
+        prompt("LANDMARK_DATA:" + JSON.stringify(landmarkData));
+    }
+</script>
+</body>
+</html>

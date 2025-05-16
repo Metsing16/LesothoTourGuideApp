@@ -1,0 +1,76 @@
+.root {
+    -fx-base: #1a1a1a;
+    -fx-background: #222222;
+    -fx-control-inner-background: derive(-fx-base, 35%);
+    -fx-accent: #0066cc;
+    -fx-focus-color: #0099ff;
+    -fx-faint-focus-color: #0099ff22;
+}
+
+
+.glow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #0099ff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 153, 255, 0.6), 5, 0, 0, 0);
+}
+
+.glow-button:hover {
+    -fx-background-color: rgba(0, 153, 255, 0.1);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 153, 255, 0.8), 10, 0, 0, 0);
+}
+
+.glow-button:pressed {
+    -fx-background-color: rgba(0, 153, 255, 0.2);
+}
+
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal .track, .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .thumb, .scroll-bar:vertical .thumb {
+    -fx-background-color: #444444;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar:horizontal .thumb:hover, .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #555555;
+}
+
+
+.radio-button {
+    -fx-text-fill: white;
+}
+
+.radio-button .radio {
+    -fx-border-color: #0099ff;
+    -fx-border-radius: 10px;
+    -fx-background-color: transparent;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #0099ff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 153, 255, 0.8), 5, 0, 0, 0);
+}
+
+.radio-button .dot {
+    -fx-background-color: white;
+}
